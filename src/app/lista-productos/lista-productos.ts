@@ -12,6 +12,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class ListaProductos {
 
+  //padre controla el estado de la lista de productos por tanto se usa signal
   protected readonly listaProductos = signal<Producto[]>([
     { descripcion: 'telefono', precio: 100 },
     { descripcion: 'tablet', precio: 200 },
