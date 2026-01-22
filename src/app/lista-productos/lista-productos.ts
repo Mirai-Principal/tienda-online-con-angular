@@ -2,16 +2,17 @@ import { Component, signal } from '@angular/core';
 import { Productos } from "../productos/productos";
 import { Producto } from "../models/producto.model";
 import { FormsModule, NgForm } from '@angular/forms';
+import { FormularioProducto } from "../formulario-producto/formulario-producto";
 
 @Component({
   selector: 'app-lista-productos',
   standalone: true,
-  imports: [Productos, FormsModule],
+  imports: [Productos, FormsModule, FormularioProducto],
   templateUrl: './lista-productos.html',
   styleUrl: './lista-productos.css',
 })
 export class ListaProductos {
-
+  //usando referencia local (#descripcion, #precio)
   //padre controla el estado de la lista de productos por tanto se usa signal
   protected readonly listaProductos = signal<Producto[]>([
     { descripcion: 'telefono', precio: 100 },
@@ -25,6 +26,8 @@ export class ListaProductos {
       { descripcion: newDescripcion, precio: newPrecio }
     ]);
   }
+
+  //usando formularios reactivos
 
   protected readonly descripcionForm = signal<string>('');
   protected readonly precioForm = signal<number | null>(null);
@@ -41,9 +44,14 @@ export class ListaProductos {
     ]);
 
     // Limpiar el formulario
-    this.descripcionForm.set('');
-    this.precioForm.set(null);
     form.reset();
   }
 
+  //listado de productos usando viewChild en el form
+  obtenerProducto(producto: Producto) {
+    this.listaProductos.update(list => [
+      ...list,
+      producto
+    ]);
+  }
 }

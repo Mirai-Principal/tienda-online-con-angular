@@ -1,11 +1,12 @@
 <h1 class="text-info">Lista de productos</h1>
 <div class="w-50 mx-auto">
         <div class="list-group">
-                @for (producto of listaProductos(); track producto) {
-                <app-productos class="list-group-item list-group-item-action" [descripcion]="producto.descripcion"
-                        [precio]="producto.precio" />
+                @for (productoItem of listaProductos(); track productoItem) {
+                <app-productos class="list-group-item list-group-item-action" [producto]="productoItem" />
                 }
         </div>
+
+        <!-- usando referencia local -->
         <div class="d-flex justify-content-center flex-column my-3 gap-2">
                 <h2 class="text-success-emphasis">Agregar producto</h2>
                 <input type="text" class="form-control" placeholder="Ingrese el nombre del producto" #descripcion>
@@ -14,6 +15,8 @@
                         (click)="agregarProducto(descripcion.value, precio.valueAsNumber); descripcion.value=''; precio.valueAsNumber=0;">Agregar
                         producto</button>
         </div>
+
+        <!-- two way binding -->
         <div class="d-flex justify-content-center flex-column my-3 gap-2">
                 <h2 class="text-warning-emphasis">Agregar producto con formulario</h2>
                 <form #form="ngForm" (ngSubmit)="agregarProductoForm(form)">
@@ -25,6 +28,8 @@
                         <button type="submit" class="btn btn-primary form-control" [disabled]="form.invalid">Agregar
                                 producto</button>
                 </form>
-
         </div>
+
+        <!-- usando viewchild entre componentes -->
+        <app-formulario-producto (productoAgregado)="obtenerProducto($event)" />
 </div>
