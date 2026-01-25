@@ -1,1 +1,2 @@
-<p>Descripcion: {{ producto.descripcion }} | Precio: {{ producto.precio }}</p>
+<li class="list-group-item list-group-item-action">{{ producto.descripcion }} | {{ producto.precio }} <button
+        class="btn btn-primary ms-4" (click)="emitirDetalleProducto()">VerDetalle</button></li>

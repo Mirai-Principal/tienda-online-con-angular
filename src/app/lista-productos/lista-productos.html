@@ -1,10 +1,19 @@
 <h1 class="text-info">Lista de productos</h1>
 <div class="w-50 mx-auto">
-        <div class="list-group">
-                @for (productoItem of listaProductos(); track productoItem) {
-                <app-productos class="list-group-item list-group-item-action" [producto]="productoItem" />
-                }
+        <!-- Mostrar producto seleccionado -->
+        @if (productoSeleccionado(); as producto) {
+        <div class="alert alert-info mb-3 ">
+                <h4>Producto Seleccionado:</h4>
+                <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+                <p><strong>Precio:</strong> ${{ producto.precio }}</p>
         </div>
+        }
+
+        <ul class="list-group">
+                @for (productoItem of listaProductos(); track productoItem) {
+                <app-productos [producto]="productoItem" />
+                }
+        </ul>
 
         <app-formulario-producto />
 </div>

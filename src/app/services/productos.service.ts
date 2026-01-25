@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { signal } from '@angular/core';
 import { Producto } from '../models/producto.model';
 import { Observable } from 'rxjs';
@@ -28,4 +28,7 @@ export class ProductosService {
   agregarProducto(producto: Producto) {
     this.listaProductos.update(list => [...list, producto]);
   }
+
+  //emite un evento desde el servicio
+  detalleProductoEmmiter = new EventEmitter<Producto>();
 }
