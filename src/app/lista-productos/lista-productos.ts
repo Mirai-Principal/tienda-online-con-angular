@@ -1,8 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, Signal } from '@angular/core';
 import { Productos } from "../productos/productos";
 import { Producto } from "../models/producto.model";
 import { FormsModule, NgForm } from '@angular/forms';
 import { FormularioProducto } from "../formulario-producto/formulario-producto";
+import { ProductosService } from "../services/productos.service";
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-lista-productos',
@@ -12,46 +14,13 @@ import { FormularioProducto } from "../formulario-producto/formulario-producto";
   styleUrl: './lista-productos.css',
 })
 export class ListaProductos {
-  //usando referencia local (#descripcion, #precio)
-  //padre controla el estado de la lista de productos por tanto se usa signal
-  protected readonly listaProductos = signal<Producto[]>([
-    { descripcion: 'telefono', precio: 100 },
-    { descripcion: 'tablet', precio: 200 },
-    { descripcion: 'computadora', precio: 300 },
-  ]);
-
-  protected agregarProducto(newDescripcion: string, newPrecio: number) {
-    this.listaProductos.update(list => [
-      ...list,
-      { descripcion: newDescripcion, precio: newPrecio }
-    ]);
+  //de preferencia usar signals para manejar el estado de la lista de productos
+  //? pero si es posible evitar usar singal si ya el servicio retorna un observable q previamente fue signal
+  protected readonly listaProductos!: Signal<Producto[]>;
+  constructor(private productosService: ProductosService) {
+    this.listaProductos = toSignal(this.productosService.getListaProductos(), {
+      initialValue: []
+    });
   }
 
-  //usando formularios reactivos
-
-  protected readonly descripcionForm = signal<string>('');
-  protected readonly precioForm = signal<number | null>(null);
-
-  agregarProductoForm(form: NgForm) {
-    if (form.invalid || this.descripcionForm().trim() === '' || this.precioForm() === null || this.precioForm()! <= 0) {
-      alert('Formulario invalido');
-      return;
-    }
-
-    this.listaProductos.update(list => [
-      ...list,
-      { descripcion: this.descripcionForm(), precio: this.precioForm()! }
-    ]);
-
-    // Limpiar el formulario
-    form.reset();
-  }
-
-  //listado de productos usando viewChild en el form
-  obtenerProducto(producto: Producto) {
-    this.listaProductos.update(list => [
-      ...list,
-      producto
-    ]);
-  }
 }

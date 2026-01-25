@@ -1,6 +1,7 @@
-import { Component, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Producto } from '../models/producto.model';
+import { ProductosService } from '../services/productos.service';
 
 @Component({
   selector: 'app-formulario-producto',
@@ -9,29 +10,22 @@ import { Producto } from '../models/producto.model';
   styleUrl: './formulario-producto.css',
 })
 export class FormularioProducto {
-  //referencias a los elementos del formulario
-  @ViewChild('descripcionForm') descripcionForm!: ElementRef;
-  @ViewChild('precioForm') precioForm!: ElementRef;
+  descripcionInput = signal('');
+  precioInput = signal<number | null>(null);
 
-  //pa enviar datos a lista de productos
-  @Output() productoAgregado = new EventEmitter<Producto>();
+  constructor(private productosService: ProductosService) { }
 
   agregarProducto(form: NgForm) {
-    const descripcion = this.descripcionForm.nativeElement.value.trim();
-    const precio = this.precioForm.nativeElement.value;
-
-    if (form.invalid || descripcion === '' || precio <= 0) {
+    if (form.invalid || this.descripcionInput() === '' || this.precioInput() === null || this.precioInput()! <= 0) {
       alert('Por favor, complete todos los campos correctamente.');
       return;
     }
-
     // envia un producto al componente padre
-    const producto: Producto = { descripcion, precio };
-    this.productoAgregado.emit(producto);
-
+    const producto: Producto = { descripcion: this.descripcionInput(), precio: this.precioInput()! };
+    this.productosService.agregarProducto(producto);
     // resetea el formulario
-    this.descripcionForm.nativeElement.value = '';
-    this.precioForm.nativeElement.value = '';
+    this.descripcionInput.set('');
+    this.precioInput.set(null);
     form.resetForm();
   }
 }

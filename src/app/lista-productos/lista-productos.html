@@ -6,30 +6,5 @@
                 }
         </div>
 
-        <!-- usando referencia local -->
-        <div class="d-flex justify-content-center flex-column my-3 gap-2">
-                <h2 class="text-success-emphasis">Agregar producto</h2>
-                <input type="text" class="form-control" placeholder="Ingrese el nombre del producto" #descripcion>
-                <input type="number" class="form-control" placeholder="Ingrese el precio del producto" #precio>
-                <button class="btn btn-primary form-control"
-                        (click)="agregarProducto(descripcion.value, precio.valueAsNumber); descripcion.value=''; precio.valueAsNumber=0;">Agregar
-                        producto</button>
-        </div>
-
-        <!-- two way binding -->
-        <div class="d-flex justify-content-center flex-column my-3 gap-2">
-                <h2 class="text-warning-emphasis">Agregar producto con formulario</h2>
-                <form #form="ngForm" (ngSubmit)="agregarProductoForm(form)">
-                        <input type="text" class="form-control" placeholder="Ingrese el nombre del producto"
-                                [(ngModel)]="descripcionForm" id="descripcionForm" name="descripcionForm"
-                                autocomplete="off" required>
-                        <input type="number" class="form-control" placeholder="Ingrese el precio del producto"
-                                [(ngModel)]="precioForm" id="precioForm" name="precioForm" autocomplete="off" required>
-                        <button type="submit" class="btn btn-primary form-control" [disabled]="form.invalid">Agregar
-                                producto</button>
-                </form>
-        </div>
-
-        <!-- usando viewchild entre componentes -->
-        <app-formulario-producto (productoAgregado)="obtenerProducto($event)" />
+        <app-formulario-producto />
 </div>
