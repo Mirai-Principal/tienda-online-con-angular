@@ -8,11 +8,24 @@ import { toObservable } from '@angular/core/rxjs-interop';
   providedIn: 'root',
 })
 export class ProductosService {
-  private readonly listaProductos = signal<Producto[]>([
-    { descripcion: 'telefono', precio: 100 },
-    { descripcion: 'tablet', precio: 200 },
-    { descripcion: 'computadora', precio: 300 },
-  ]);
+
+  private id = 1;
+  private readonly listaProductos = signal<Producto[]>([]);
+  constructor() {
+    this.inicializarProductos();
+  }
+
+  private inicializarProductos() {
+    this.listaProductos.set([
+      { id: this.nextId(), descripcion: 'telefono', precio: 100 },
+      { id: this.nextId(), descripcion: 'tablet', precio: 200 },
+      { id: this.nextId(), descripcion: 'computadora', precio: 300 },
+    ]);
+  }
+
+  private nextId() {
+    return this.id++;
+  }
 
   //opcion 1 - convertir signal a observable
   getListaProductos(): Observable<Producto[]> {
@@ -25,9 +38,21 @@ export class ProductosService {
     return this.listaProductos$;
   }
 
-  agregarProducto(producto: Producto) {
-    this.listaProductos.update(list => [...list, producto]);
+  //agregar o actualizar producto
+  guardarProducto(producto: Producto) {
+    if (producto.id) {
+      // actualizar
+      this.listaProductos.update(list => list.map(p => p.id === producto.id ? producto : p));
+    } else {
+      // agregar
+      this.listaProductos.update(list => [...list, { ...producto, id: this.nextId() }]);
+    }
   }
+
+  getProductoById(id: number): Producto | undefined {
+    return this.listaProductos().find(p => p.id === id);
+  }
+
 
   //emite un evento desde el servicio
   detalleProductoEmmiter = new EventEmitter<Producto>();

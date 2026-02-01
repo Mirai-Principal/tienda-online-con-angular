@@ -1,8 +1,15 @@
-<form #form="ngForm" (ngSubmit)="agregarProducto(form)" class="w-50 mx-auto">
-    <input type=" text" class="form-control" placeholder="Ingrese el nombre del producto" id="descripcionInput"
-        [(ngModel)]="descripcionInput" name="descripcionInput" autocomplete="off" required>
-    <input type="number" class="form-control" placeholder="Ingrese el precio del producto" id="precioInput"
-        [(ngModel)]="precioInput" name="precioInput" autocomplete="off" required>
-    <button type="submit" class="btn btn-primary form-control" [disabled]="form.invalid">Agregar
-        producto</button>
+<h2 class="text-info">{{ esEdicion() ? 'Editar Producto' : 'Agregar Producto' }}</h2>
+<form #form="ngForm" (ngSubmit)="guardarProducto(form)" class=" my-4 w-50 mx-auto">
+    <div class="d-flex justify-content-between align-items-center">
+        <input type=" text" class="form-control w-75 me-3" placeholder="Ingrese el nombre del producto"
+            id="descripcionInput" [(ngModel)]="descripcionInput" name="descripcionInput" autocomplete="off" required>
+        <input type="number" class="form-control w-25" placeholder="Ingrese el precio del producto" id="precioInput"
+            [(ngModel)]="precioInput" name="precioInput" autocomplete="off" required>
+    </div>
+    <!-- flex column si la pantalla es muy pequeña -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between mt-3">
+        <button type="submit" class="btn btn-primary w-100 w-sm-50 me-0 me-sm-3" [disabled]="form.invalid">Guardar
+            producto</button>
+        <button type="button" class="btn btn-secondary w-100 w-sm-50 mt-3 mt-sm-0" routerLink="/">Cancelar</button>
+    </div>
 </form>
