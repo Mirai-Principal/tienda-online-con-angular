@@ -1,2 +1,4 @@
-<li class="list-group-item list-group-item-action">{{ producto.descripcion }} | {{ producto.precio }} <button
-        class="btn btn-primary ms-4" (click)="emitirDetalleProducto()">VerDetalle</button></li>
+<li class="list-group-item list-group-item-action">
+        {{ producto.descripcion | titlecase }} | {{ producto.precio | currency:'USD' }}
+        <button class="btn btn-primary ms-4" (click)="emitirDetalleProducto()">VerDetalle</button>
+</li>

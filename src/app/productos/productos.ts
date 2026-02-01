@@ -1,11 +1,12 @@
-import { Component, computed, signal, Input, Output, EventEmitter, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Producto } from '../models/producto.model';
 import { ProductosService } from '../services/productos.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './productos.html',
   styleUrl: './productos.css',
 })
