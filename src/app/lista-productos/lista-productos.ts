@@ -1,8 +1,7 @@
 import { Component, signal, Signal } from '@angular/core';
 import { Productos } from "../productos/productos";
 import { Producto } from "../models/producto.model";
-import { FormsModule, NgForm } from '@angular/forms';
-import { FormularioProducto } from "../formulario-producto/formulario-producto";
+import { FormsModule } from '@angular/forms';
 import { ProductosService } from "../services/productos.service";
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from "@angular/router";
@@ -10,7 +9,7 @@ import { Router, RouterLink } from "@angular/router";
 @Component({
   selector: 'app-lista-productos',
   standalone: true,
-  imports: [Productos, FormsModule, FormularioProducto, RouterLink],
+  imports: [Productos, FormsModule, RouterLink],
   templateUrl: './lista-productos.html',
   styleUrl: './lista-productos.css',
 })

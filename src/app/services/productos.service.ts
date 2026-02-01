@@ -9,6 +9,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 })
 export class ProductosService {
 
+
   private id = 1;
   private readonly listaProductos = signal<Producto[]>([]);
   constructor() {
@@ -51,6 +52,10 @@ export class ProductosService {
 
   getProductoById(id: number): Producto | undefined {
     return this.listaProductos().find(p => p.id === id);
+  }
+
+  eliminarProducto(id: number) {
+    this.listaProductos.update(list => list.filter(p => p.id !== id));
   }
 
 

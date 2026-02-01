@@ -7,9 +7,13 @@
             [(ngModel)]="precioInput" name="precioInput" autocomplete="off" required>
     </div>
     <!-- flex column si la pantalla es muy pequeña -->
-    <div class="d-flex flex-column flex-sm-row justify-content-between mt-3">
-        <button type="submit" class="btn btn-primary w-100 w-sm-50 me-0 me-sm-3" [disabled]="form.invalid">Guardar
+    <div class="d-flex flex-column flex-md-row justify-content-between mt-3">
+        <button type="submit" class="btn btn-primary w-100 w-md-50 me-0 me-md-3" [disabled]="form.invalid">Guardar
             producto</button>
-        <button type="button" class="btn btn-secondary w-100 w-sm-50 mt-3 mt-sm-0" routerLink="/">Cancelar</button>
+        @if (esEdicion()) {
+        <button type="button" class="btn btn-danger w-100 w-md-50 me-0 me-md-3 mt-3 mt-md-0"
+            (click)="eliminarProducto()">Eliminar</button>
+        }
+        <button type="button" class="btn btn-warning w-100 w-md-50 mt-3 mt-md-0" routerLink="/">Cancelar</button>
     </div>
 </form>

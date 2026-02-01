@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
   styleUrl: './formulario-producto.css',
 })
 export class FormularioProducto {
+
   idProducto = signal<number | null>(null);
   descripcionInput = signal('');
   precioInput = signal<number | null>(null);
@@ -29,7 +30,7 @@ export class FormularioProducto {
         const producto = this.productosService.getProductoById(this.idNumerico()!);
         //si el producto no existe, redirigimos a la lista
         if (!producto) {
-          this.router.navigate(['/']);
+          this.router.navigate(['/error']);
           return;
         }
         this.idProducto.set(producto.id!);
@@ -73,6 +74,17 @@ export class FormularioProducto {
       this.location.back();
     } else {
       this.router.navigate(['/productos']);
+    }
+  }
+
+  eliminarProducto() {
+    if (this.idProducto() !== null) {
+      this.productosService.eliminarProducto(this.idProducto()!);
+      //limpiamos los campos
+      this.idProducto.set(null);
+      this.descripcionInput.set('');
+      this.precioInput.set(null);
+      this.router.navigate(['/']);
     }
   }
 }
