@@ -2,8 +2,8 @@ import { Component, computed, effect, input, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Producto } from '../models/producto.model';
 import { ProductosService } from '../services/productos.service';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-formulario-producto',
@@ -13,27 +13,25 @@ import { Location } from '@angular/common';
 })
 export class FormularioProducto {
 
-  idProducto = signal<number | null>(null);
+  keyProducto = signal<string | null>(null);
   descripcionInput = signal('');
   precioInput = signal<number | null>(null);
-  id = input<string>();
+  key = input<string>(); //parametro key para editar un producto
 
   constructor(private productosService: ProductosService,
-    private location: Location,
     private router: Router,
-    private route: ActivatedRoute
   ) {
     effect(() => {
       //verificamos si estamos en modo edición
       if (this.esEdicion()) {
         //modo edición
-        const producto = this.productosService.getProductoById(this.idNumerico()!);
+        const producto = this.productosService.getProductoBykey(this.key()!);
         //si el producto no existe, redirigimos a la lista
         if (!producto) {
           this.router.navigate(['/error']);
           return;
         }
-        this.idProducto.set(producto.id!);
+        this.keyProducto.set(this.key()!);
         this.descripcionInput.set(producto.descripcion);
         this.precioInput.set(producto.precio);
 
@@ -41,17 +39,10 @@ export class FormularioProducto {
     });
   }
 
-  protected readonly idNumerico = computed(() =>
-    this.id() ? +this.id()! : null   //el + convierte el string a number
-  );
   protected readonly esEdicion = computed(() =>
-    this.idNumerico() !== null
+    this.key() ? this.key()! : null
   );
 
-  ngOnInit() {
-    //simple, obtenemos parametros para lectura no reactiva
-    const idSnapshot = this.route.snapshot.paramMap.get('id');
-  }
 
   guardarProducto(form: NgForm) {
     if (form.invalid || this.descripcionInput() === '' || this.precioInput() === null || this.precioInput()! <= 0) {
@@ -59,32 +50,25 @@ export class FormularioProducto {
       return;
     }
     // envia un producto al componente padre
-    const producto: Producto = { id: this.idProducto(), descripcion: this.descripcionInput(), precio: this.precioInput()! };
+    const producto: Producto = { descripcion: this.descripcionInput(), precio: this.precioInput()! };
     this.productosService.guardarProducto(producto);
+
     // resetea el formulario
-    this.idProducto.set(null);
+    this.keyProducto.set(null);
     form.resetForm();
     this.router.navigate(['/']);
   }
 
-  //? si queremos que el boton cancelar nos lleve a la pagina anterior
-  cancelar() {
-    // Intenta regresar, si no hay historial va a /productos
-    if (window.history.length > 2) {
-      this.location.back();
-    } else {
-      this.router.navigate(['/productos']);
-    }
-  }
 
   eliminarProducto() {
-    if (this.idProducto() !== null) {
-      this.productosService.eliminarProducto(this.idProducto()!);
+    if (this.keyProducto() !== null) {
+      //this.productosService.eliminarProducto(this.keyProducto()!);
       //limpiamos los campos
-      this.idProducto.set(null);
+      this.keyProducto.set(null);
       this.descripcionInput.set('');
       this.precioInput.set(null);
       this.router.navigate(['/']);
     }
   }
 }
+

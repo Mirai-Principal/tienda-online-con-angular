@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { Producto } from '../models/producto.model';
 import { ProductosService } from '../services/productos.service';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class Productos {
   //en el hijo ka variable que recibe datos del padre no debe ser signal ya q el padre controla el estado
   @Input() producto!: Producto;
+  key = input<string>();
 
   constructor(private productosService: ProductosService,
     private router: Router
@@ -21,10 +22,10 @@ export class Productos {
 
   emitirDetalleProducto() {
     //emite el evento desde el componente
-    this.productosService.detalleProductoEmmiter.emit(this.producto);
+    // this.productosService.detalleProductoEmmiter.emit(this.producto);
   }
 
-  editarProducto(id: number) {
-    this.router.navigate(['/editar', id]);
+  editarProducto() {
+    this.router.navigate(['/editar', this.key()]);
   }
 }

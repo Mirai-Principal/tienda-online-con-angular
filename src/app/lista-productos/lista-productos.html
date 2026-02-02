@@ -6,17 +6,22 @@
         </div>
 
         <!-- Mostrar producto seleccionado -->
-        @if (productoSeleccionado(); as producto) {
+        <!-- @if (productoSeleccionado(); as producto) {
         <div class="alert alert-info mb-3 ">
                 <h4>Producto Seleccionado:</h4>
                 <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
                 <p><strong>Precio:</strong> ${{ producto.precio }}</p>
         </div>
-        }
+        } -->
 
         <ul class="list-group">
-                @for (productoItem of listaProductos(); track productoItem) {
-                <app-productos [producto]="productoItem" />
+                <!-- opcion 1: recorrer el objeto con getkeys -->
+                <!-- @for (key of getkeys(); track key) {
+                <app-productos [producto]="listaProductos()[key]" [key]="key" />
+                } -->
+                <!-- opcion 2: optima recorrer el array con productosArray -->
+                @for (productoItem of productosArray(); track productoItem.key) {
+                <app-productos [producto]="productoItem" [key]="productoItem.key" />
                 }
         </ul>
 </div>
