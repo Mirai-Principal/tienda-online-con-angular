@@ -3,29 +3,29 @@ import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Producto } from '../models/producto.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class DatosService {
-  private readonly url = 'https://tienda-online-771da-default-rtdb.firebaseio.com/'
+  private readonly url = 'https://tienda-online-771da-default-rtdb.firebaseio.com/';
 
-  constructor(private httpClient: HttpClient) { }
-  //mapa de objetos o diccionario
-
-  private readonly _productos = signal<Record<string, Producto>>({});  //lo mismo que { [key: string]: Producto }
-
-  readonly productos = this._productos.asReadonly();
+  constructor(private http: HttpClient) { }
 
   listarProductos(): Observable<Record<string, Producto>> {
-    return this.httpClient.get<Record<string, Producto>>(this.url + 'datos.json');
+    return this.http.get<Record<string, Producto>>(this.url + 'datos.json');
   }
 
-  guardarProducto(producto: Producto): Observable<any> {
-    //se genera el valor de la key de forma automatica
-    return this.httpClient.post(this.url + 'datos.json', producto);
+  guardarProducto(producto: Producto): Observable<{ name: string }> {
+    return this.http.post<{ name: string }>(this.url + 'datos.json', producto);
   }
 
-  actualizarProducto(key: string, producto: Producto): Observable<any> {
-    return this.httpClient.put(this.url + 'datos/' + key + '.json', producto);
+  actualizarProducto(key: string, producto: Producto): Observable<void> {
+    return this.http.put<void>(`${this.url}datos/${key}.json`, producto);
+  }
+
+  eliminarProducto(key: string): Observable<void> {
+    return this.http.delete<void>(`${this.url}datos/${key}.json`);
+  }
+
+  obtenerProducto(key: string): Observable<Producto> {
+    return this.http.get<Producto>(`${this.url}datos/${key}.json`);
   }
 }

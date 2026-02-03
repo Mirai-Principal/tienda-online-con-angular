@@ -13,62 +13,57 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class FormularioProducto {
 
-  keyProducto = signal<string | null>(null);
+  key = input<string | null>();
+
   descripcionInput = signal('');
   precioInput = signal<number | null>(null);
-  key = input<string>(); //parametro key para editar un producto
 
-  constructor(private productosService: ProductosService,
-    private router: Router,
+  constructor(
+    private productosService: ProductosService,
+    private router: Router
   ) {
-    effect(() => {
-      //verificamos si estamos en modo edición
-      if (this.esEdicion()) {
-        //modo edición
-        const producto = this.productosService.getProductoBykey(this.key()!);
-        //si el producto no existe, redirigimos a la lista
-        if (!producto) {
-          this.router.navigate(['/error']);
-          return;
-        }
-        this.keyProducto.set(this.key()!);
-        this.descripcionInput.set(producto.descripcion);
-        this.precioInput.set(producto.precio);
 
+    effect(() => {
+      if (!this.key()) return;
+
+      const producto = this.productosService.getProductoByKey(this.key()!)();
+      // si aún no está cargado, pedimos los datos
+      if (!producto) {
+        this.productosService.cargarProductos();
+        return;
       }
+
+      // solo se ejecuta cuando ya hay datos
+      this.descripcionInput.set(producto.descripcion);
+      this.precioInput.set(producto.precio);
     });
   }
 
-  protected readonly esEdicion = computed(() =>
-    this.key() ? this.key()! : null
-  );
-
-
   guardarProducto(form: NgForm) {
-    if (form.invalid || this.descripcionInput() === '' || this.precioInput() === null || this.precioInput()! <= 0) {
-      alert('Por favor, complete todos los campos correctamente.');
-      return;
-    }
-    // envia un producto al componente padre
-    const producto: Producto = { descripcion: this.descripcionInput(), precio: this.precioInput()! };
-    this.productosService.guardarProducto(producto);
+    if (form.invalid) return;
 
-    // resetea el formulario
-    this.keyProducto.set(null);
-    form.resetForm();
+    const producto: Producto = {
+      descripcion: this.descripcionInput(),
+      precio: this.precioInput()!
+    };
+
+    this.productosService.guardarProducto(producto, this.key() ?? undefined);
     this.router.navigate(['/']);
   }
 
-
   eliminarProducto() {
-    if (this.keyProducto() !== null) {
-      //this.productosService.eliminarProducto(this.keyProducto()!);
-      //limpiamos los campos
-      this.keyProducto.set(null);
-      this.descripcionInput.set('');
-      this.precioInput.set(null);
-      this.router.navigate(['/']);
-    }
+    const key = this.key();
+
+    if (!key) return;
+
+    this.productosService.eliminarProducto(key);
+
+    // limpiar estado local
+    this.descripcionInput.set('');
+    this.precioInput.set(null);
+
+    // volver a la lista
+    this.router.navigate(['/']);
   }
 }
 

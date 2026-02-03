@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class Productos {
   //en el hijo ka variable que recibe datos del padre no debe ser signal ya q el padre controla el estado
-  @Input() producto!: Producto;
+  producto = input<Producto>();
   key = input<string>();
 
   constructor(private productosService: ProductosService,

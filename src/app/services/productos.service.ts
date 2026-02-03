@@ -1,54 +1,39 @@
-import { Injectable, EventEmitter, Signal } from '@angular/core';
+import { Injectable, EventEmitter, signal, computed } from '@angular/core';
 import { Producto } from '../models/producto.model';
 import { DatosService } from './datos.service';
-import { map } from 'rxjs/operators';
+import { map, Subject, tap } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ProductosService {
 
+  private readonly _productos = signal<Record<string, Producto>>({});
+  readonly productos = this._productos.asReadonly();
 
-  private listaProductos!: Signal<Record<string, Producto>>;
-  constructor(private datosService: DatosService) {
+  constructor(private datosService: DatosService) { }
 
+  cargarProductos() {
+    this.datosService.listarProductos().subscribe(productos =>
+      this._productos.set(productos)
+    );
   }
 
-  listarProductos() {
-    return this.datosService.listarProductos();
-  }
-
-
-  //agregar o actualizar producto
-  guardarProducto(producto: Producto, key: string | null = null) {
+  guardarProducto(producto: Producto, key?: string) {
     if (key) {
-      // actualizar
-      this.datosService.actualizarProducto(key, producto);
+      this.datosService.actualizarProducto(key, producto)
+        .subscribe(() => this.cargarProductos());
     } else {
-      // agregar
-      this.datosService.guardarProducto(producto).subscribe({
-        next: (key) => {
-          console.log('Producto guardado con key:', key);
-        },
-        error: (error) => {
-          console.error('Error al guardar producto:', error);
-        }
-      });
+      this.datosService.guardarProducto(producto)
+        .subscribe(() => this.cargarProductos());
     }
   }
 
-  getProductoBykey(id: string): Producto | undefined {
-    return undefined;
-    // return this.listaProductos().find(p => p.id === id);
+  eliminarProducto(key: string) {
+    this.datosService.eliminarProducto(key)
+      .subscribe(() => this.cargarProductos());
   }
 
-  eliminarProducto(id: string) {
-    // this.listaProductos.update(list => list.filter(p => p.id !== id));
+  getProductoByKey(key: string) {
+    return computed(() => this._productos()[key]);
   }
-
-
-  detalleProductoEmmiter = new EventEmitter<Record<string, Producto>>();
-
-
 }
 
