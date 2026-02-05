@@ -13,7 +13,7 @@ export class DatosService {
     return this.http.get<Record<string, Producto>>(this.url + 'datos.json');
   }
 
-  guardarProducto(producto: Producto): Observable<{ name: string }> {
+  agregarProducto(producto: Producto): Observable<{ name: string }> {
     return this.http.post<{ name: string }>(this.url + 'datos.json', producto);
   }
 

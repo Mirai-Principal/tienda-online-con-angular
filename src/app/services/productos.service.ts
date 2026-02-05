@@ -25,20 +25,29 @@ export class ProductosService {
   }
 
   guardarProducto(producto: Producto, key?: string) {
-    //si tiene key es porque es una actualizacion
     if (key) {
+      //si tiene key es porque es una actualizacion
       this.datosService.actualizarProducto(key, producto)
-        .subscribe(() => this.cargarProductos());
+        .subscribe(() => {
+          this._productosCargados.set(false);   //para q cargue los cambios
+          this.cargarProductos();
+        });
     } else {
       //si no tiene key es porque es un nuevo producto
-      this.datosService.guardarProducto(producto)
-        .subscribe(() => this.cargarProductos());
+      this.datosService.agregarProducto(producto)
+        .subscribe(() => {
+          this._productosCargados.set(false);   //para q cargue los cambios
+          this.cargarProductos();
+        });
     }
   }
 
   eliminarProducto(key: string) {
     this.datosService.eliminarProducto(key)
-      .subscribe(() => this.cargarProductos());
+      .subscribe(() => {
+        this._productosCargados.set(false);   //para q cargue los cambios
+        this.cargarProductos();
+      });
   }
 
   getProductoByKey(key: string) {
