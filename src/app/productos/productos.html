@@ -1,5 +1,5 @@
 <li class="list-group-item list-group-item-action">
         {{ producto()!.descripcion | titlecase }} | {{ producto()!.precio | currency:'USD' }}
-        <button class="btn btn-primary ms-2" (click)="emitirDetalleProducto()">VerDetalle</button>
+        <button class="btn btn-primary ms-2" (click)="detalleProducto()">VerDetalle</button>
         <button class="btn btn-warning ms-2" (click)="editarProducto()">Editar</button>
 </li>

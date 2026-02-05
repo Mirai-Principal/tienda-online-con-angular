@@ -1,6 +1,5 @@
 import { Component, input, Input } from '@angular/core';
 import { Producto } from '../models/producto.model';
-import { ProductosService } from '../services/productos.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -16,13 +15,10 @@ export class Productos {
   producto = input<Producto>();
   key = input<string>();
 
-  constructor(private productosService: ProductosService,
-    private router: Router
-  ) { }
+  constructor(private router: Router) { }
 
-  emitirDetalleProducto() {
-    //emite el evento desde el componente
-    // this.productosService.detalleProductoEmmiter.emit(this.producto);
+  detalleProducto() {
+    this.router.navigate(['/detalle-producto', this.key()]);
   }
 
   editarProducto() {

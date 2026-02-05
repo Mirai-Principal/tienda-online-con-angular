@@ -1,9 +1,8 @@
-import { Component, computed, effect, input, signal } from '@angular/core';
+import { Component, effect, input, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Producto } from '../models/producto.model';
 import { ProductosService } from '../services/productos.service';
 import { Router, RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-formulario-producto',

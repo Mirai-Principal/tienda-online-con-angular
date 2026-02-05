@@ -1,0 +1,11 @@
+@if (producto()) {
+<div class="alert alert-info mb-3 ">
+    <h4>Producto Seleccionado:</h4>
+    <p><strong>Descripción:</strong> {{ producto()!.descripcion }}</p>
+    <p><strong>Precio:</strong> ${{ producto()!.precio }}</p>
+</div>
+} @else {
+<div class="alert alert-warning">
+    <p>Cargando producto...</p>
+</div>
+}
