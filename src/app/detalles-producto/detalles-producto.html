@@ -1,11 +1,22 @@
-@if (producto()) {
-<div class="alert alert-info mb-3 ">
-    <h4>Producto Seleccionado:</h4>
-    <p><strong>Descripción:</strong> {{ producto()!.descripcion }}</p>
-    <p><strong>Precio:</strong> ${{ producto()!.precio }}</p>
+@if (producto(); as p) {
+<div class="producto-card fade-in">
+    <h3 class="title">📦 Producto seleccionado</h3>
+
+    <div class="detalle">
+        <span class="label">Descripción</span>
+        <span class="value description">{{ p.descripcion }}</span>
+    </div>
+
+    <div class="detalle">
+        <span class="label">Precio</span>
+        <span class="value precio">${{ p.precio }}</span>
+    </div>
 </div>
 } @else {
-<div class="alert alert-warning">
-    <p>Cargando producto...</p>
+<div class="producto-card skeleton">
+    <div class="skeleton-title shimmer"></div>
+
+    <div class="skeleton-row shimmer"></div>
+    <div class="skeleton-row shimmer"></div>
 </div>
 }

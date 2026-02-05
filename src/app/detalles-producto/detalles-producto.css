@@ -1,0 +1,36 @@
+/* Card base */
+.producto-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 420px;
+    margin: 1rem auto;
+}
+
+/* Loaded state */
+.title {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.detalle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.label {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.value {
+    font-weight: 500;
+}
+
+.precio,
+.description {
+    color: #16a34a;
+}

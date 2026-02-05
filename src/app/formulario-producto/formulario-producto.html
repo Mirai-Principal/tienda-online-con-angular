@@ -1,5 +1,5 @@
 <h2 class="text-info">{{ key() ? 'Editar Producto' : 'Agregar Producto' }}</h2>
-<form #form="ngForm" (ngSubmit)="guardarProducto(form)" class=" my-4 w-50 mx-auto">
+<form #form="ngForm" (ngSubmit)="guardarProducto(form)" class=" my-4 w-50 mx-auto fade-in">
     <div class="d-flex justify-content-between align-items-center">
         <input type=" text" class="form-control w-75 me-3" placeholder="Ingrese el nombre del producto"
             id="descripcionInput" [(ngModel)]="descripcionInput" name="descripcionInput" autocomplete="off" required>
@@ -11,7 +11,7 @@
         <button type="submit" class="btn btn-primary w-100 w-md-50 me-0 me-md-3" [disabled]="form.invalid">Guardar
             producto</button>
         @if (key()) {
-        <button type="button" class="btn btn-danger w-100 w-md-50 me-0 me-md-3 mt-3 mt-md-0"
+        <button type="button" class="btn btn-danger w-100 w-md-50 me-0 me-md-3 mt-3 mt-md-0" [disabled]="form.invalid"
             (click)="eliminarProducto()">Eliminar</button>
         }
         <button type="button" class="btn btn-warning w-100 w-md-50 mt-3 mt-md-0" routerLink="/">Cancelar</button>

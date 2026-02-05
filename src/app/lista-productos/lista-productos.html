@@ -1,16 +1,17 @@
 <h1 class="text-info">Lista de productos</h1>
 <div class="w-50 mx-auto">
-
         <div>
                 <button class="btn btn-primary my-4" routerLink="/agregar">Agregar Producto</button>
         </div>
-
-        <ul class="list-group">
-                <!-- opcion 1: recorrer el objeto con getkeys -->
-                <!-- @for (key of getkeys(); track key) {
-                <app-productos [producto]="listaProductos()[key]" [key]="key" />
-                } -->
-                <!-- opcion 2: optima recorrer el array con productosArray -->
+        @if (productosArray().length === 0) {
+        <div class="skeleton">
+                <div class="skeleton-row shimmer"></div>
+                <div class="skeleton-row shimmer"></div>
+                <div class="skeleton-row shimmer"></div>
+                <div class="skeleton-row shimmer"></div>
+        </div>
+        }
+        <ul class="list-group fade-in">
                 @for (productoItem of productosArray(); track productoItem.key) {
                 <app-productos [producto]="productoItem" [key]="productoItem.key" />
                 }

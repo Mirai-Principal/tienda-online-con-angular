@@ -1,3 +1,62 @@
-/* You can add global styles to this file, and also import other style files */
+/* ================================
+   Animaciones globales
+================================ */
 
-/* @import "tailwindcss"; */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+/* ================================
+   Skeleton Loader (global)
+================================ */
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-title {
+    height: 22px;
+    width: 60%;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background: #e5e7eb;
+}
+
+.skeleton-row {
+    height: 16px;
+    border-radius: 6px;
+    background: #e5e7eb;
+    margin-bottom: 0.75rem;
+}
+
+.shimmer {
+    background: linear-gradient(100deg,
+            #e5e7eb 40%,
+            #f3f4f6 50%,
+            #e5e7eb 60%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+
+/* ================================
+   Transiciones reutilizables
+================================ */
+
+.fade-in {
+    animation: fadeSlide 0.35s ease-out;
+}
