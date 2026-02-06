@@ -11,6 +11,7 @@ export class ProductosService {
   constructor(private datosService: DatosService) { }
 
   private readonly _productosCargados = signal(false);   //para q no vuelva a cargar los productos si ya estan en memoria
+  //hay un problema q si alguien modifico el datos en otro lado, no se reflejara aqui
   cargarProductos() {
     if (this._productosCargados()) return;
     this.datosService.listarProductos().subscribe({
@@ -54,5 +55,3 @@ export class ProductosService {
     return computed(() => this._productos()[key]);
   }
 }
-
-
