@@ -1,6 +1,5 @@
 import { Component, computed, effect, input, signal, Signal } from '@angular/core';
-import { Producto } from '../models/producto.model';
-import { ProductosService } from '../services/productos.service';
+import { ProductosService } from '../../core/services/productos.service';
 
 @Component({
   selector: 'app-detalles-producto',

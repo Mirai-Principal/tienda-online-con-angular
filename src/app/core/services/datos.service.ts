@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Producto } from '../models/producto.model';
-import { environment } from '../../environments';
+import { environment } from '../../../environments';
 import { LoginService } from './login.service';
 
 @Injectable({ providedIn: 'root' })

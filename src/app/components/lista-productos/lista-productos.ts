@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
 import { Productos } from "../productos/productos";
 import { FormsModule } from '@angular/forms';
-import { ProductosService } from "../services/productos.service";
+import { ProductosService } from "../../core/services/productos.service";
 import { RouterModule } from '@angular/router';
 
 @Component({
