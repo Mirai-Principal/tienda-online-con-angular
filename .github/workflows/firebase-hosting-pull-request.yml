@@ -13,7 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Generar el archivo environment.ts a partir del Secreto de GitHub
+      - name: Create environment file
+        run: |
+          mkdir -p src/
+          echo "${{ secrets.ENVIRONMENT }}" > src/environments.ts
+      
+      # Construir el proyecto de Angular
       - run: npx ng build --configuration=production --aot
+      
+      # Desplegar a Firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
