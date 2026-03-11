@@ -1,6 +1,19 @@
 <div class="container">
     <div class="row text-center">
         <h1 class="text-primary">{{title() }}</h1>
+
+        <!-- link de login y logout -->
+        <div class="d-flex justify-content-center my-3">
+            @if(!isAuthenticated()) {
+            @if(getRoute() !== '/login') {
+            <a class="btn btn-outline-primary mx-2 cursor-pointer" routerLink="/login">Login</a>
+            }
+            }
+            @else {
+            <a class="btn btn-outline-danger mx-2 cursor-pointer" (click)="logout()">Logout</a>
+            }
+        </div>
+
         <router-outlet />
     </div>
 </div>

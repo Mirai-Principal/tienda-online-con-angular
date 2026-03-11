@@ -9,7 +9,7 @@ import { log } from 'firebase/firestore/pipelines';
 })
 export class LoginService {
 
-  private _token = signal<string>('');
+  private _token = signal<string | null>(null); //inicializar el token
   readonly token = this._token.asReadonly();
 
   constructor(
@@ -18,7 +18,7 @@ export class LoginService {
   ) { }
 
   login(email: string, password: string) {
-    console.log('email', email);
+    // console.log('email', email);
     const auth = this.firebaseService.auth;
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
@@ -29,11 +29,26 @@ export class LoginService {
           });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('❌ Error al iniciar sesion', errorCode, errorMessage);
+        console.error('❌ Error al iniciar sesion', error);
       });
+  }
 
+  //verificar si el usuario esta autenticado
+  isAuthenticated() {
+    return this.token() != null;
+  }
+
+  //logout
+  logout() {
+    const auth = this.firebaseService.auth;
+    auth.signOut()
+      .then(() => {
+        this._token.set(null);  //borrar el token para cerrar sesion
+        this.router.navigate(['/login']);
+      })
+      .catch((error) => {
+        console.error('❌ Error al cerrar sesion', error);
+      });
   }
 
 }
