@@ -1,0 +1,6 @@
+{
+  "rules": {
+    ".read": "auth != null",  // si no hay el objeto auth entonces no se permite el acceso a datos
+    ".write": "auth != null",  // 
+  }
+}
