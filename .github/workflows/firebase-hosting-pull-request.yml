@@ -21,7 +21,7 @@ jobs:
       - name: Create environment file
         run: |
           mkdir -p src/
-          cat << 'EOF' > src/environment.ts
+          cat << 'EOF' > src/environments.ts
           ${{ secrets.ENVIRONMENT }}
           EOF
 
