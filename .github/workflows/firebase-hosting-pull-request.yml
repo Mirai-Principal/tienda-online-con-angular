@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Dependencies
+        run: npm install
+
       # Generar el archivo environment.ts a partir del Secreto de GitHub
       - name: Create environment file
         run: |
@@ -21,7 +24,7 @@ jobs:
           echo "${{ secrets.ENVIRONMENT }}" > src/environments.ts
       
       # Construir el proyecto de Angular
-      - run: npx ng build --configuration=production --aot
+      - run: npm run build -- --configuration=production --aot
       
       # Desplegar a Firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
