@@ -21,11 +21,11 @@ jobs:
       - name: Create environment file
         run: |
           mkdir -p src/
-          cat << 'EOF' > src/environment.prod.ts
+          echo "${{ secrets.ENVIRONMENT }}" > src/environment.ts
 
       
       # Construir el proyecto de Angular
-      - run: npm run build -- --configuration=production --aot
+      - run: npm run build --configuration=production --aot
       
       # Desplegar a Firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
